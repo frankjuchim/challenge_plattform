@@ -6,19 +6,37 @@
 {% if challenge %}
   <p><strong>{{ challenge.title }}</strong></p>
 
-  <ol>
-  {% for team in teams %}
-    <li>
-      <strong>{{ team.name }}</strong> – {{ team.score }} Punkte
-    </li>
-  {% endfor %}
-  </ol>
+  <table>
+    <tr>
+      <th>Team</th>
+      {% for task in tasks %}
+        <th>{{ task.title }}</th>
+      {% endfor %}
+      <th>Gesamt</th>
+    </tr>
+
+    {% for team in teams %}
+      <tr>
+        <td><strong>{{ team.name }}</strong></td>
+
+        {% for task in tasks %}
+          <td>
+            {{ team.task_points[task.id] }}
+          </td>
+        {% endfor %}
+
+        <td><strong>{{ team.total }}</strong></td>
+      </tr>
+    {% endfor %}
+  </table>
+
 {% else %}
   <p>Keine aktive Challenge</p>
 {% endif %}
 
 <script>
-setTimeout(() => location.reload(), 5000);
+  // Auto-Refresh für Beamer
+  setTimeout(() => location.reload(), 5000);
 </script>
 
 {% endblock %}

@@ -134,3 +134,54 @@ a:hover {
   color: #888;
   text-align: center;
 }
+
+/* --- Admin Dashboard Cards --- */
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.admin-card {
+  background: #f5f7fa;
+  border-radius: 10px;
+  padding: 20px;
+  text-decoration: none;
+  color: #222;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.admin-card .icon {
+  font-size: 2.2em;
+  margin-bottom: 10px;
+}
+
+.admin-card .title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.admin-card .desc {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Farbvarianten */
+
+.admin-card.primary {
+  background: #e3f2fd;
+}
+
+.admin-card.success {
+  background: #e8f5e9;
+}
+

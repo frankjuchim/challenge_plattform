@@ -2,12 +2,37 @@
 {% block content %}
 
 <h2>Admin Dashboard</h2>
-
 <p>
-  <a href="/admin/challenge/new">➕ Neue Challenge anlegen</a><br>
-  <a href="/admin/submissions">📂 Abgaben bewerten</a><br>
-  <a href="/admin/teams">👥 Teams verwalten</a>
+  <a href="/admin/logout">🔓 Abmelden</a>
 </p>
+
+<div class="admin-grid">
+
+  <a class="admin-card primary" href="/admin/challenge/new">
+    <div class="icon">➕</div>
+    <div class="title">Neue Challenge</div>
+    <div class="desc">Challenge anlegen und vorbereiten</div>
+  </a>
+
+  <a class="admin-card" href="/admin/submissions">
+    <div class="icon">📝</div>
+    <div class="title">Abgaben bewerten</div>
+    <div class="desc">Punkte vergeben & Feedback</div>
+  </a>
+
+  <a class="admin-card" href="/admin/teams">
+    <div class="icon">👥</div>
+    <div class="title">Teams verwalten</div>
+    <div class="desc">Teams anzeigen & löschen</div>
+  </a>
+
+  <a class="admin-card success" href="/scoreboard" target="_blank">
+    <div class="icon">🏆</div>
+    <div class="title">Scoreboard</div>
+    <div class="desc">Live-Übersicht (Beamer)</div>
+  </a>
+
+</div>
 
 <h3>Challenges</h3>
 

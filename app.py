@@ -14,6 +14,15 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {"pde"}
 
 @app.before_request
+def protect_admin_routes():
+    if request.path.startswith("/admin"):
+        if request.path == "/admin/login":
+            return
+        if not session.get("is_admin"):
+            abort(403)
+
+
+@app.before_request
 def force_http():
     if request.headers.get("X-Forwarded-Proto") == "https":
         return redirect(request.url.replace("https://", "http://"), code=301)
@@ -105,33 +114,86 @@ def index():
 def scoreboard():
     challenge = get_active_challenge()
 
-    teams = query_db("""
-        SELECT teams.name,
-               COALESCE(SUM(submissions.points), 0) AS score
-        FROM teams
-        LEFT JOIN submissions ON teams.id = submissions.team_id
-        GROUP BY teams.id
-        ORDER BY score DESC
-    """)
+    if not challenge:
+        return render_template("scoreboard.html", challenge=None)
+
+    # Aufgaben der Challenge
+    tasks = query_db(
+        "SELECT id, title FROM tasks WHERE challenge_id = ? ORDER BY id",
+        (challenge["id"],)
+    )
+
+    # Teams
+    teams = query_db(
+        "SELECT id, name FROM teams ORDER BY name"
+    )
+
+    # Alle Abgaben dieser Challenge
+    submissions = query_db("""
+        SELECT team_id, task_id, points
+        FROM submissions
+        WHERE task_id IN (
+            SELECT id FROM tasks WHERE challenge_id = ?
+        )
+    """, (challenge["id"],))
+
+    # Punkte-Matrix vorbereiten
+    score_map = {}
+    for team in teams:
+        score_map[team["id"]] = {
+            "name": team["name"],
+            "task_points": {t["id"]: 0 for t in tasks},
+            "total": 0
+        }
+
+    # Punkte eintragen
+    for s in submissions:
+        team_entry = score_map[s["team_id"]]
+        team_entry["task_points"][s["task_id"]] = s["points"]
+        team_entry["total"] += s["points"]
+
+    # Nach Gesamtpunkten sortieren
+    sorted_teams = sorted(
+        score_map.values(),
+        key=lambda x: x["total"],
+        reverse=True
+    )
 
     return render_template(
         "scoreboard.html",
         challenge=challenge,
-        teams=teams
+        tasks=tasks,
+        teams=sorted_teams
     )
 
 
 
+
 # ---------- Admin ----------
-@app.route("/admin", methods=["GET", "POST"])
+@app.route("/admin")
+def admin_root():
+    return redirect("/admin/login")
+
+  
+@app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
         if request.form["password"] == ADMIN_PASSWORD:
-            return redirect(url_for("admin_dashboard"))
+            session["is_admin"] = True
+            return redirect("/admin/dashboard")
         else:
-            print("ABORT 403 - 1")
-            abort(403)
+            return render_template(
+                "admin/login.html",
+                error="Falsches Passwort"
+            )
+
     return render_template("admin/login.html")
+  
+
+@app.route("/admin/logout")
+def admin_logout():
+    session.pop("is_admin", None)
+    return redirect("/")
 
 
 @app.route("/admin/dashboard")
@@ -312,6 +374,7 @@ def challenge_view():
         return redirect(url_for("index"))
 
     challenge = get_active_challenge()
+    submission_map = {}
     tasks = []
     message = None
     status = "NONE"
@@ -406,11 +469,8 @@ def submit_task(task_id):
         """,
         (team_id, task_id, filepath, datetime.now().isoformat())
     )
-
-    # 🔴 DAS WAR DER FEHLENDE TEIL
+    
     return redirect(url_for("challenge_view"))
-
-
 
 
 
