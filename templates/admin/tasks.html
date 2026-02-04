@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Aufgaben – {{ challenge.title }}</h2>
+
+<form method="post">
+  <input type="text" name="title" placeholder="Aufgabentitel" required><br>
+  <textarea name="description" placeholder="Beschreibung"></textarea><br>
+  <input type="number" name="max_points" placeholder="Max Punkte" required><br>
+  <button type="submit">Aufgabe hinzufügen</button>
+</form>
+
+<hr>
+
+<ul>
+{% for t in tasks %}
+  <li>{{ t.title }} ({{ t.max_points }} Punkte)</li>
+{% endfor %}
+</ul>
+
+<a href="/admin/dashboard">⬅ zurück</a>
+
+{% endblock %}
