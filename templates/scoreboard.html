@@ -8,7 +8,9 @@
 
   <ol>
   {% for team in teams %}
-    <li>{{ team.name }} – {{ team.score }} Punkte</li>
+    <li>
+      <strong>{{ team.name }}</strong> – {{ team.score }} Punkte
+    </li>
   {% endfor %}
   </ol>
 {% else %}

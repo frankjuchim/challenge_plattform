@@ -8,8 +8,7 @@
     <th>Team</th>
     <th>Aufgabe</th>
     <th>Datei</th>
-    <th>Punkte</th>
-    <th>Kommentar</th>
+    <th>Bewertung</th>
     <th>Aktion</th>
   </tr>
 
@@ -20,19 +19,33 @@
     <td>
       <a href="/admin/download/{{ s.id }}">Download</a>
     </td>
-    <td>{{ s.points }}</td>
-    <td>{{ s.comment or "" }}</td>
+
     <td>
       <form method="post" action="/admin/grade/{{ s.id }}">
-        <input type="number" name="points" required>
-        <input type="text" name="comment">
-        <button type="submit">💾</button>
-      </form>
+        <input type="number"
+               name="points"
+               min="0"
+               placeholder="Punkte"
+               value="{{ s.points }}"
+               required>
 
+        <br>
+
+        <input type="text"
+               name="comment"
+               placeholder="Kommentar (optional)"
+               value="{{ s.comment or '' }}">
+
+        <br><br>
+        <button type="submit">💾 Bewertung speichern</button>
+      </form>
+    </td>
+
+    <td>
       <form method="post"
             action="/admin/reset/{{ s.id }}"
             onsubmit="return confirm('Abgabe wirklich löschen?')">
-        <button type="submit" class="reset">♻</button>
+        <button type="submit" class="reset">♻ Soft-Reset</button>
       </form>
     </td>
   </tr>

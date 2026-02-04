@@ -97,7 +97,23 @@ def index():
 
 @app.route("/scoreboard")
 def scoreboard():
-    return render_template("scoreboard.html")
+    challenge = get_active_challenge()
+
+    teams = query_db("""
+        SELECT teams.name,
+               COALESCE(SUM(submissions.points), 0) AS score
+        FROM teams
+        LEFT JOIN submissions ON teams.id = submissions.team_id
+        GROUP BY teams.id
+        ORDER BY score DESC
+    """)
+
+    return render_template(
+        "scoreboard.html",
+        challenge=challenge,
+        teams=teams
+    )
+
 
 
 # ---------- Admin ----------
@@ -245,6 +261,42 @@ def download_submission(submission_id):
         as_attachment=True,
         download_name=download_name
     )
+    
+@app.route("/admin/task/delete/<int:task_id>", methods=["POST"])
+def delete_task(task_id):
+    # Abgaben zur Aufgabe löschen
+    query_db("DELETE FROM submissions WHERE task_id = ?", (task_id,))
+    # Aufgabe löschen
+    query_db("DELETE FROM tasks WHERE id = ?", (task_id,))
+    return redirect(request.referrer or "/admin/dashboard")
+
+@app.route("/admin/challenge/delete/<int:challenge_id>", methods=["POST"])
+def delete_challenge(challenge_id):
+    # Aufgaben der Challenge holen
+    tasks = query_db(
+        "SELECT id FROM tasks WHERE challenge_id = ?",
+        (challenge_id,)
+    )
+
+    for t in tasks:
+        query_db("DELETE FROM submissions WHERE task_id = ?", (t["id"],))
+
+    query_db("DELETE FROM tasks WHERE challenge_id = ?", (challenge_id,))
+    query_db("DELETE FROM challenges WHERE id = ?", (challenge_id,))
+
+    return redirect("/admin/dashboard")
+
+@app.route("/admin/team/delete/<int:team_id>", methods=["POST"])
+def delete_team(team_id):
+    query_db("DELETE FROM submissions WHERE team_id = ?", (team_id,))
+    query_db("DELETE FROM teams WHERE id = ?", (team_id,))
+    return redirect("/admin/teams")
+
+@app.route("/admin/teams")
+def admin_teams():
+    teams = query_db("SELECT id, name FROM teams ORDER BY name")
+    return render_template("admin/teams.html", teams=teams)
+
 
 # ---------- Teams ----------
 @app.route("/challenge")
@@ -271,10 +323,15 @@ def challenge_view():
         )
 
         # 🔹 Eigene Abgaben des Teams holen
-        submissions = query_db(
-            "SELECT task_id FROM submissions WHERE team_id = ?",
-            (session["team_id"],)
-        )
+        submissions = query_db("""
+            SELECT task_id, points, comment
+            FROM submissions
+            WHERE team_id = ?
+        """, (session["team_id"],))
+
+        submission_map = {
+            s["task_id"]: s for s in submissions
+        }
         submitted_task_ids = {s["task_id"] for s in submissions}
 
         if status == "FINISHED":
@@ -288,7 +345,8 @@ def challenge_view():
         message=message,
         status=status,
         remaining=remaining,
-        submitted_task_ids=submitted_task_ids
+        submitted_task_ids=submitted_task_ids,
+        submission_map=submission_map
     )
 
 

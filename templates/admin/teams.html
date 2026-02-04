@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Teams verwalten</h2>
+
+<ul>
+{% for team in teams %}
+  <li>
+    {{ team.name }}
+
+    <form method="post"
+          action="/admin/team/delete/{{ team.id }}"
+          style="display:inline"
+          onsubmit="return confirm('Team wirklich löschen? Alle Abgaben und Punkte gehen verloren.')">
+      <button type="submit" class="reset">🗑 Löschen</button>
+    </form>
+  </li>
+{% endfor %}
+</ul>
+
+<a href="/admin/dashboard">⬅ zurück</a>
+
+{% endblock %}

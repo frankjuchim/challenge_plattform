@@ -2,23 +2,34 @@
 {% block content %}
 
 <h2>Admin Dashboard</h2>
+
 <p>
-  <a href="/admin/submissions">📂 Abgaben bewerten</a>
+  <a href="/admin/challenge/new">➕ Neue Challenge anlegen</a><br>
+  <a href="/admin/submissions">📂 Abgaben bewerten</a><br>
+  <a href="/admin/teams">👥 Teams verwalten</a>
 </p>
 
-<a href="/admin/challenge/new">➕ Neue Challenge anlegen</a>
+<h3>Challenges</h3>
 
 <ul>
 {% for c in challenges %}
   <li>
     <strong>{{ c.title }}</strong>
+
     {% if c.active %}
-      (AKTIV)
+      <span class="ok">(aktiv)</span>
     {% else %}
       <a href="/admin/challenge/{{ c.id }}/activate">Aktivieren</a>
     {% endif %}
-    |
-    <a href="/admin/challenge/{{ c.id }}/tasks">Aufgaben</a>
+
+    · <a href="/admin/challenge/{{ c.id }}/tasks">Aufgaben</a>
+
+    <form method="post"
+          action="/admin/challenge/delete/{{ c.id }}"
+          style="display:inline"
+          onsubmit="return confirm('Challenge wirklich löschen? Alle Aufgaben & Abgaben gehen verloren.')">
+      <button type="submit" class="reset">🗑</button>
+    </form>
   </li>
 {% endfor %}
 </ul>
