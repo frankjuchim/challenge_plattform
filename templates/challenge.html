@@ -1,35 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Aktive Challenge</h2>
+<h2>🧩 Live Event</h2>
 
-{% if message %}
-  <p class="blocked">{{ message }}</p>
+{% if not challenge %}
+  <div class="event-card">
+    <p class="text-secondary">
+      Noch ist kein Event aktiv – lehnt euch zurück ☕
+    </p>
+  </div>
+{% else %}
+
+<div class="mb-3 text-secondary">
+  Team <strong>{{ team }}</strong> · {{ challenge.title }}
+</div>
+
+{% if status == "RUNNING" %}
+  <div class="event-card mb-3">
+    ⏱ Restzeit:
+    <strong><span id="timer"></span></strong>
+  </div>
 {% endif %}
 
-{% if challenge %}
-  <p><strong>Team:</strong> {{ team }}</p>
-  <p><strong>Challenge:</strong> {{ challenge.title }}</p>
+<div class="row g-3">
 
-  {% if status == "RUNNING" %}
-    <p class="timer">⏱ Restzeit: <span id="timer"></span></p>
-  {% elif status == "FINISHED" %}
-    <p class="blocked">⛔ Zeit abgelaufen</p>
-  {% endif %}
+{% for task in tasks %}
+  <div class="col-md-6">
+    <div class="event-card">
 
-  <ul>
-  {% for task in tasks %}
-    <li>
-      <strong>{{ task.title }}</strong><br>
-      {{ task.description }}<br>
-      <em>Max Punkte: {{ task.max_points }}</em><br><br>
+      <h5>{{ task.title }}</h5>
+      <p class="text-secondary">{{ task.description }}</p>
+      <small>Max Punkte: {{ task.max_points }}</small>
+
+      <hr>
 
       {% if task.id in submission_map %}
-        <span class="ok">✅ Abgabe erfolgt</span><br>
-        <strong>Punkte:</strong> {{ submission_map[task.id].points }}<br>
-        {% if submission_map[task.id].comment %}
-          <em>Kommentar:</em> {{ submission_map[task.id].comment }}
-        {% endif %}
+        <span class="badge bg-success">
+          ✔ Abgegeben ({{ submission_map[task.id].points }} Punkte)
+        </span>
       {% else %}
         {% if status == "RUNNING" %}
           <form method="post"
@@ -39,18 +47,21 @@
             <input type="file"
                    name="file"
                    accept=".pde"
+                   class="form-control mb-2"
                    required>
 
-            <br>
-            <button type="submit">Abgeben</button>
+            <button class="btn btn-outline-light">
+              Abgeben
+            </button>
           </form>
-        {% else %}
-          <span class="blocked">⛔ Keine Abgabe möglich</span>
         {% endif %}
       {% endif %}
-    </li>
-  {% endfor %}
-  </ul>
+
+    </div>
+  </div>
+{% endfor %}
+
+</div>
 {% endif %}
 
 {% if status == "RUNNING" %}

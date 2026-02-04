@@ -1,62 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Admin Dashboard</h2>
-<p>
-  <a href="/admin/logout">🔓 Abmelden</a>
-</p>
+<h2 class="mb-4">🎛 Event Control</h2>
 
-<div class="admin-grid">
+<div class="row g-4">
 
-  <a class="admin-card primary" href="/admin/challenge/new">
-    <div class="icon">➕</div>
-    <div class="title">Neue Challenge</div>
-    <div class="desc">Challenge anlegen und vorbereiten</div>
-  </a>
+  <div class="col-md-3">
+    <a href="/admin/challenge/new" class="btn btn-outline-light w-100 py-4">
+      ➕<br><strong>Neues Event</strong>
+    </a>
+  </div>
 
-  <a class="admin-card" href="/admin/submissions">
-    <div class="icon">📝</div>
-    <div class="title">Abgaben bewerten</div>
-    <div class="desc">Punkte vergeben & Feedback</div>
-  </a>
+  <div class="col-md-3">
+    <a href="/admin/submissions" class="btn btn-outline-light w-100 py-4">
+      📝<br><strong>Bewertungen</strong>
+    </a>
+  </div>
 
-  <a class="admin-card" href="/admin/teams">
-    <div class="icon">👥</div>
-    <div class="title">Teams verwalten</div>
-    <div class="desc">Teams anzeigen & löschen</div>
-  </a>
+  <div class="col-md-3">
+    <a href="/admin/teams" class="btn btn-outline-light w-100 py-4">
+      👥<br><strong>Teams</strong>
+    </a>
+  </div>
 
-  <a class="admin-card success" href="/scoreboard" target="_blank">
-    <div class="icon">🏆</div>
-    <div class="title">Scoreboard</div>
-    <div class="desc">Live-Übersicht (Beamer)</div>
-  </a>
+  <div class="col-md-3">
+    <a href="/scoreboard" target="_blank"
+       class="btn btn-outline-success w-100 py-4">
+      🏆<br><strong>Live Scoreboard</strong>
+    </a>
+  </div>
 
 </div>
 
-<h3>Challenges</h3>
+<hr class="my-4">
 
+<h4>Events</h4>
 <ul>
 {% for c in challenges %}
   <li>
-    <strong>{{ c.title }}</strong>
-
+    {{ c.title }}
     {% if c.active %}
-      <span class="ok">(aktiv)</span>
+      <span class="badge bg-success">aktiv</span>
     {% else %}
-      <a href="/admin/challenge/{{ c.id }}/activate">Aktivieren</a>
+      <a href="/admin/challenge/{{ c.id }}/activate">aktivieren</a>
     {% endif %}
-
-    · <a href="/admin/challenge/{{ c.id }}/tasks">Aufgaben</a>
-
-    <form method="post"
-          action="/admin/challenge/delete/{{ c.id }}"
-          style="display:inline"
-          onsubmit="return confirm('Challenge wirklich löschen? Alle Aufgaben & Abgaben gehen verloren.')">
-      <button type="submit" class="reset">🗑</button>
-    </form>
   </li>
 {% endfor %}
 </ul>
+
+<a href="/admin/logout" class="btn btn-sm btn-outline-secondary mt-3">
+  🔓 Logout
+</a>
 
 {% endblock %}

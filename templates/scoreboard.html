@@ -1,42 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>🏆 Scoreboard</h2>
+<h2 class="mb-4 text-center">🏆 Night Code Jam · Live Scoreboard</h2>
 
 {% if challenge %}
-  <p><strong>{{ challenge.title }}</strong></p>
+<div class="event-card">
 
-  <table>
+<table class="table table-borderless align-middle">
+  <thead>
     <tr>
       <th>Team</th>
       {% for task in tasks %}
-        <th>{{ task.title }}</th>
+        <th class="text-center">{{ task.title }}</th>
       {% endfor %}
-      <th>Gesamt</th>
+      <th class="text-center">Gesamt</th>
     </tr>
+  </thead>
 
-    {% for team in teams %}
-      <tr>
-        <td><strong>{{ team.name }}</strong></td>
+  <tbody>
+  {% for team in teams %}
+    <tr
+      {% if loop.index == 1 %}
+        style="background: rgba(94,231,223,0.15);"
+      {% elif loop.index == 2 %}
+        style="background: rgba(159,122,234,0.12);"
+      {% elif loop.index == 3 %}
+        style="background: rgba(255,255,255,0.08);"
+      {% endif %}
+    >
+      <td>
+        <strong>
+          {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% endif %}
+          {{ team.name }}
+        </strong>
+      </td>
 
-        {% for task in tasks %}
-          <td>
-            {{ team.task_points[task.id] }}
-          </td>
-        {% endfor %}
+      {% for task in tasks %}
+        <td class="text-center">
+          {{ team.task_points[task.id] }}
+        </td>
+      {% endfor %}
 
-        <td><strong>{{ team.total }}</strong></td>
-      </tr>
-    {% endfor %}
-  </table>
+      <td class="text-center">
+        <strong>{{ team.total }}</strong>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+</div>
+
+<p class="text-center text-secondary mt-4">
+  Gemeinsam coden · voneinander lernen · Spaß haben
+</p>
 
 {% else %}
-  <p>Keine aktive Challenge</p>
+<p>Kein aktives Event</p>
 {% endif %}
 
 <script>
-  // Auto-Refresh für Beamer
-  setTimeout(() => location.reload(), 5000);
+setTimeout(() => location.reload(), 5000);
 </script>
 
 {% endblock %}

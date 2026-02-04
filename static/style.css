@@ -1,187 +1,102 @@
-/* Reset */
-* {
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+/* === Night Code Jam – Social Coding Event === */
+
+:root {
+  --bg-main: #0f0c29;
+  --bg-secondary: #1a1440;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --accent: #5ee7df;
+  --accent-soft: #9f7aea;
+  --text-main: #f5f5f5;
+  --text-muted: #b3b3d1;
+  --border-soft: rgba(255,255,255,0.12);
 }
 
 body {
-  margin: 0;
-  background: #f4f6f8;
-  color: #333;
+  background: radial-gradient(circle at top,
+    #2b1055,
+    #1a1440 40%,
+    #0f0c29 100%);
+  color: var(--text-main);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
+  min-height: 100vh;
 }
 
-/* Layout */
-.container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+/* Navbar */
+.navbar {
+  background: rgba(10, 8, 40, 0.85) !important;
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border-soft);
 }
 
-h1, h2 {
-  margin-top: 0;
-  color: #1f3a5f;
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
 h2 {
-  border-bottom: 2px solid #eef2f6;
-  padding-bottom: 10px;
+  margin-bottom: 1rem;
+}
+
+/* Cards */
+.card,
+.list-group-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  color: var(--text-main);
 }
 
 /* Buttons */
-button {
-  padding: 8px 16px;
-  background: #1f7ae0;
-  color: white;
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-soft));
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.95rem;
+  color: #0f0c29;
+  font-weight: 600;
 }
 
-button:hover {
-  background: #155bb5;
+.btn-outline-light {
+  border-color: var(--border-soft);
 }
 
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+.btn-outline-light:hover {
+  background: rgba(255,255,255,0.1);
 }
 
-button.reset {
-  background: #d9534f;
+/* Event cards */
+.event-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--border-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-button.reset:hover {
-  background: #b52b27;
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
 }
 
-/* Inputs */
-input[type="text"],
-input[type="number"],
-input[type="file"] {
-  padding: 6px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* Tables */
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255,255,255,0.04);
+  color: var(--text-main);
 }
 
-/* Lists */
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  padding: 15px;
-  margin-bottom: 10px;
-  background: #f8fafc;
-  border-radius: 6px;
-  border-left: 5px solid #1f7ae0;
-}
-
-/* Timer */
-.timer {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #1f7ae0;
-}
-
-/* Status */
-.ok {
-  color: #2e8b57;
-  font-weight: bold;
-}
-
-.blocked {
-  color: #a94442;
-  font-style: italic;
-}
-
-/* Tables (Admin) */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th, td {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
-
-th {
-  background: #f0f4f8;
-}
-
-/* Links */
-a {
-  color: #1f7ae0;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
+/* Muted text */
+.text-secondary {
+  color: var(--text-muted) !important;
 }
 
 /* Footer */
-.footer {
-  margin-top: 30px;
+footer {
   font-size: 0.85rem;
-  color: #888;
-  text-align: center;
+  color: var(--text-muted);
+  opacity: 0.8;
 }
-
-/* --- Admin Dashboard Cards --- */
-
-.admin-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.admin-card {
-  background: #f5f7fa;
-  border-radius: 10px;
-  padding: 20px;
-  text-decoration: none;
-  color: #222;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.admin-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-}
-
-.admin-card .icon {
-  font-size: 2.2em;
-  margin-bottom: 10px;
-}
-
-.admin-card .title {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.admin-card .desc {
-  font-size: 0.9em;
-  color: #555;
-}
-
-/* Farbvarianten */
-
-.admin-card.primary {
-  background: #e3f2fd;
-}
-
-.admin-card.success {
-  background: #e8f5e9;
-}
-

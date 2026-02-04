@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center text-center">
+  <div class="col-md-8">
+
+    <h1 class="mb-4">
+      🌙 Night Code Jam
+    </h1>
+
+    <p class="text-secondary mb-5">
+      Ein entspannter Abend mit Code, Ideen & Austausch
+    </p>
+
+    {% if start_time %}
+      <div class="event-card mb-4">
+        <h2 class="mb-3">Event startet in</h2>
+        <h1 style="font-size: 4rem;">
+          <span id="countdown"></span>
+        </h1>
+      </div>
+    {% else %}
+      <div class="event-card">
+        <p class="text-secondary">
+          Noch kein Event geplant – bleibt entspannt 🙂
+        </p>
+      </div>
+    {% endif %}
+
+    <p class="text-secondary mt-4">
+      💬 Tauscht euch aus · ☕ holt euch etwas zu trinken · 💡 sammelt Ideen
+    </p>
+
+  </div>
+</div>
+
+{% if start_time %}
+<script>
+let start = {{ start_time }};
+function updateCountdown() {
+  const now = Math.floor(Date.now() / 1000);
+  let diff = start - now;
+
+  if (diff <= 0) {
+    location.reload();
+    return;
+  }
+
+  const min = Math.floor(diff / 60);
+  const sec = diff % 60;
+
+  document.getElementById("countdown").innerText =
+    String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+{% endif %}
+
+{% endblock %}

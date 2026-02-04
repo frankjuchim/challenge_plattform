@@ -58,6 +58,23 @@ def challenge_remaining_seconds(challenge):
 
     return max(0, int(remaining))
 
+@app.route("/start")
+def start_screen():
+    challenge = get_active_challenge()
+
+    if not challenge:
+        return render_template(
+            "start.html",
+            start_time=None
+        )
+
+    return render_template(
+        "start.html",
+        start_time=challenge["start_time"],
+        title=challenge["title"]
+    )
+
+
 # ---------- Datenbank ----------
 def get_db():
     conn = sqlite3.connect(DATABASE)
