@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, session
+from flask import Flask, render_template, request, redirect, url_for, abort, session, send_from_directory
 from datetime import datetime, timedelta
 import os
 import sqlite3
@@ -167,6 +167,83 @@ def manage_tasks(cid):
         "admin/tasks.html",
         challenge=challenge,
         tasks=tasks
+    )
+
+@app.route("/admin/submissions")
+def admin_submissions():
+    submissions = query_db("""
+        SELECT submissions.id,
+               teams.name AS team,
+               tasks.title AS task,
+               submissions.filename,
+               submissions.points,
+               submissions.comment
+        FROM submissions
+        JOIN teams ON submissions.team_id = teams.id
+        JOIN tasks ON submissions.task_id = tasks.id
+        ORDER BY teams.name
+    """)
+
+    return render_template(
+        "admin/submissions.html",
+        submissions=submissions
+    )
+
+@app.route("/admin/grade/<int:submission_id>", methods=["POST"])
+def grade_submission(submission_id):
+    points = int(request.form["points"])
+    comment = request.form.get("comment", "")
+
+    query_db(
+        "UPDATE submissions SET points = ?, comment = ? WHERE id = ?",
+        (points, comment, submission_id)
+    )
+
+    return redirect(url_for("admin_submissions"))
+
+@app.route("/admin/reset/<int:submission_id>", methods=["POST"])
+def reset_submission(submission_id):
+    query_db(
+        "DELETE FROM submissions WHERE id = ?",
+        (submission_id,)
+    )
+
+    return redirect(url_for("admin_submissions"))
+
+def safe_name(text):
+    allowed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-"
+    return "".join(c if c in allowed else "_" for c in text)
+
+@app.route("/admin/download/<int:submission_id>")
+def download_submission(submission_id):
+    submission = query_db("""
+        SELECT submissions.filename,
+               teams.name AS team,
+               tasks.id AS task_id
+        FROM submissions
+        JOIN teams ON submissions.team_id = teams.id
+        JOIN tasks ON submissions.task_id = tasks.id
+        WHERE submissions.id = ?
+    """, (submission_id,), one=True)
+
+    if not submission:
+        abort(404)
+
+    filepath = submission["filename"]
+    directory = os.path.dirname(filepath)
+    original_filename = os.path.basename(filepath)
+
+    # 🔹 Teamname "dateisicher" machen
+    team_clean = safe_name(submission["team"])
+
+    # 🔹 Neue Download-Bezeichnung
+    download_name = f"{team_clean}_Aufgabe_{submission['task_id']}.pde"
+
+    return send_from_directory(
+        directory,
+        original_filename,
+        as_attachment=True,
+        download_name=download_name
     )
 
 # ---------- Teams ----------

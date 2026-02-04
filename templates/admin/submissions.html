@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Abgaben bewerten</h2>
+
+<table border="1" cellpadding="6">
+  <tr>
+    <th>Team</th>
+    <th>Aufgabe</th>
+    <th>Datei</th>
+    <th>Punkte</th>
+    <th>Kommentar</th>
+    <th>Aktion</th>
+  </tr>
+
+{% for s in submissions %}
+  <tr>
+    <td>{{ s.team }}</td>
+    <td>{{ s.task }}</td>
+    <td>
+      <a href="/admin/download/{{ s.id }}">Download</a>
+    </td>
+    <td>{{ s.points }}</td>
+    <td>{{ s.comment or "" }}</td>
+    <td>
+      <form method="post" action="/admin/grade/{{ s.id }}">
+        <input type="number" name="points" placeholder="Punkte" required>
+        <input type="text" name="comment" placeholder="Kommentar">
+        <button type="submit">Speichern</button>
+      </form>
+
+      <form method="post"
+            action="/admin/reset/{{ s.id }}"
+            onsubmit="return confirm('Abgabe wirklich löschen?')">
+        <button type="submit">Soft-Reset</button>
+      </form>
+    </td>
+  </tr>
+{% endfor %}
+</table>
+
+<a href="/admin/dashboard">⬅ zurück</a>
+
+{% endblock %}
