@@ -1,25 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1 class="mb-4">🏁 Challenges verwalten</h1>
+<h1 class="mb-4">🏁 Challenges</h1>
+
+<div class="mb-4">
+  <a href="/admin/challenges/new" class="btn btn-primary">
+    ➕ Neue Challenge
+  </a>
+</div>
 
 <div class="event-card">
 
   {% if challenges|length == 0 %}
-    <p class="text-secondary">
-      Noch keine Challenges angelegt.
-    </p>
+    <p class="text-secondary">Noch keine Challenges angelegt.</p>
   {% endif %}
 
   <ul class="list-group list-group-flush">
     {% for c in challenges %}
-      <li class="list-group-item bg-transparent text-light d-flex justify-content-between">
-        <span>
-          <strong>{{ c.title }}</strong>
-        </span>
-        <span class="text-secondary">
-          ID {{ c.id }}
-        </span>
+      <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+
+        <strong>{{ c.title }}</strong>
+
+        <a
+          href="/admin/challenges/{{ c.id }}/tasks"
+          class="btn btn-outline-light btn-sm"
+        >
+          📋 Aufgaben
+        </a>
+
       </li>
     {% endfor %}
   </ul>

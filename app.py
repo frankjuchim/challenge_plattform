@@ -453,15 +453,30 @@ def admin_challenges():
         abort(403)
 
     challenges = query_db("""
-        SELECT *
-        FROM challenges
-        ORDER BY id DESC
+        SELECT * FROM challenges ORDER BY id DESC
     """)
 
     return render_template(
         "admin/challenges.html",
         challenges=challenges
     )
+
+@app.route("/admin/challenges/new", methods=["GET", "POST"])
+def admin_challenge_new():
+    if not session.get("is_admin"):
+        abort(403)
+
+    if request.method == "POST":
+        title = request.form["title"]
+
+        query_db(
+            "INSERT INTO challenges (title) VALUES (?)",
+            (title,)
+        )
+
+        return redirect("/admin/challenges")
+
+    return render_template("admin/challenge_new.html")
 
 
 

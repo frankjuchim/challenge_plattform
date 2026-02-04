@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="mb-4">📋 Aufgaben – {{ challenge.title }}</h1>
+
+<div class="event-card mb-4">
+
+  <form method="post">
+    <div class="row g-3">
+
+      <div class="col-md-8">
+        <label class="form-label">Aufgaben-Titel</label>
+        <input
+          type="text"
+          name="title"
+          class="form-control"
+          placeholder="z. B. Erste Animation in Processing"
+          required
+        >
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Max. Punkte</label>
+        <input
+          type="number"
+          name="max_points"
+          class="form-control"
+          value="10"
+          min="1"
+          required
+        >
+      </div>
+
+    </div>
+
+    <button class="btn btn-primary mt-3">
+      ➕ Aufgabe hinzufügen
+    </button>
+  </form>
+
+</div>
+
+<div class="event-card">
+
+  <h3 class="mb-3">Vorhandene Aufgaben</h3>
+
+  {% if tasks|length == 0 %}
+    <p class="text-secondary">Noch keine Aufgaben.</p>
+  {% endif %}
+
+  <ul class="list-group list-group-flush">
+    {% for t in tasks %}
+      <li class="list-group-item bg-transparent text-light d-flex justify-content-between">
+        {{ t.title }}
+        <span class="text-secondary">{{ t.max_points }} Punkte</span>
+      </li>
+    {% endfor %}
+  </ul>
+
+</div>
+
+<a href="/admin/challenges" class="text-secondary mt-4 d-block">
+  ← zurück zu Challenges
+</a>
+
+{% endblock %}

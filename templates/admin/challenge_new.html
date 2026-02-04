@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="mb-4">➕ Neue Challenge</h1>
+
+<div class="event-card">
+
+  <form method="post">
+    <label class="form-label">Titel der Challenge</label>
+    <input
+      type="text"
+      name="title"
+      class="form-control form-control-lg"
+      placeholder="z. B. Social Coding Event – Abend 1"
+      required
+    >
+
+    <button class="btn btn-primary mt-4">
+      💾 Challenge anlegen
+    </button>
+  </form>
+
+</div>
+
+<a href="/admin/challenges" class="text-secondary mt-4 d-block">
+  ← zurück zur Übersicht
+</a>
+
+{% endblock %}
