@@ -477,6 +477,45 @@ def admin_challenge_new():
         return redirect("/admin/challenges")
 
     return render_template("admin/challenge_new.html")
+  
+@app.route("/admin/challenges/<int:cid>/tasks", methods=["GET", "POST"])
+def admin_challenge_tasks(cid):
+    if not session.get("is_admin"):
+        abort(403)
+
+    challenge = query_db(
+        "SELECT * FROM challenges WHERE id = ?",
+        (cid,),
+        one=True
+    )
+
+    if not challenge:
+        abort(404)
+
+    if request.method == "POST":
+        title = request.form["title"]
+        max_points = int(request.form["max_points"])
+
+        query_db(
+            """
+            INSERT INTO tasks (challenge_id, title, max_points)
+            VALUES (?, ?, ?)
+            """,
+            (cid, title, max_points)
+        )
+
+        return redirect(f"/admin/challenges/{cid}/tasks")
+
+    tasks = query_db(
+        "SELECT * FROM tasks WHERE challenge_id = ?",
+        (cid,)
+    )
+
+    return render_template(
+        "admin/challenge_tasks.html",
+        challenge=challenge,
+        tasks=tasks
+    )
 
 
 

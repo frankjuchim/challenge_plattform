@@ -21,13 +21,10 @@
 
         <strong>{{ c.title }}</strong>
 
-        <a
-          href="/admin/challenges/{{ c.id }}/tasks"
-          class="btn btn-outline-light btn-sm"
-        >
+        <a href="{{ url_for('admin_challenge_tasks', cid=c.id) }}"
+          class="btn btn-outline-light btn-sm">
           📋 Aufgaben
         </a>
-
       </li>
     {% endfor %}
   </ul>
