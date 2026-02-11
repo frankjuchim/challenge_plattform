@@ -1,0 +1,115 @@
+# 🚀 Social Coding Event Platform
+
+Eine moderne, Flask-basierte Webanwendung für Coding-Challenges, Hackathons und Programmier-Wettbewerbe.
+
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)
+![Flask](https://img.shields.io/badge/Flask-3.x-green.svg)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple.svg)
+
+## 🌟 Features
+
+### Für Teilnehmer
+*   **Team-Registrierung & Login**: Sichere Anmeldung mit Teamnamen und Passwort.
+*   **Dashboard**: Übersicht über aktive Challenges und Aufgaben.
+*   **Datei-Upload**: Einfaches Einreichen von Lösungen (z.B. `.pde` Dateien für Processing).
+*   **Live Scoreboard**: Echtzeit-Ranking mit Punkten pro Aufgabe und Gesamtpunktzahl.
+*   **Responsive Design**: Optimiert für Desktop und mobile Geräte ("Dark Mode").
+
+### Für Administratoren
+*   **Admin-Dashboard**: Zentrale Verwaltung aller Challenges.
+*   **Challenge-Management**: Erstellen, Pausieren und Beenden von Challenges.
+*   **Aufgaben-Verwaltung**: Hinzufügen von Aufgaben mit Beschreibungen und maximalen Punkten.
+*   **Review-System**:
+    *   Anzeige eingereichter Lösungen.
+    *   **In-Browser Code Preview**: Code direkt im Browser lesen.
+    *   Download-Option für lokale Tests.
+    *   Bewertung mit Punkten und Feedback.
+*   **Team-Verwaltung**: Übersicht und Management registrierter Teams.
+
+## 🛠 Technologien
+
+*   **Backend**: Python, Flask, SQLAlchemy (SQLite).
+*   **Frontend**: HTML5, CSS3, Bootstrap 5.
+*   **Sicherheit**:
+    *   Passwort-Hashing (Werkzeug Security).
+    *   CSRF Protection (Flask-WTF).
+    *   Secure Filename Handling.
+*   **Architektur**: Modularer Aufbau mit Flask Blueprints und Application Factory Pattern.
+
+## 🚀 Installation & Setup
+
+ Voraussetzung: Python 3.8 oder höher.
+
+1.  **Repository klonen**
+    ```bash
+    git clone https://github.com/frankjuchim/challenge_plattform.git
+    cd challenge_plattform
+    ```
+
+2.  **Virtuelle Umgebung erstellen und aktivieren**
+    ```bash
+    python -m venv venv
+    
+    # Mac/Linux:
+    source venv/bin/activate
+    
+    # Windows:
+    venv\Scripts\activate
+    ```
+
+3.  **Abhängigkeiten installieren**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Konfiguration**
+    Erstelle eine `.env` Datei im Hauptverzeichnis (siehe `.env.example`):
+    ```ini
+    SECRET_KEY=dein-geheimer-schluessel
+    ADMIN_PASSWORD=admin123
+    DATABASE_URL=sqlite:///data/challenge.db
+    # FLASK_ENV=development
+    ```
+
+5.  **Anwendung starten**
+    ```bash
+    python app.py
+    ```
+    Die Anwendung läuft nun unter [http://localhost:8000](http://localhost:8000).
+
+## 📖 Nutzung
+
+1.  **Admin-Zugang**:
+    *   Rufe [http://localhost:8000/admin](http://localhost:8000/admin) auf (Link auch im Footer der Seite).
+    *   Login mit dem in der `.env` definierten Passwort.
+    *   Erstelle eine neue Challenge und füge Aufgaben hinzu.
+    *   Aktiviere die Challenge.
+
+2.  **Teilnehmer**:
+    *   Registrieren sich auf der Startseite.
+    *   Werden direkt zur aktiven Challenge weitergeleitet.
+    *   Können Lösungen hochladen.
+
+## 📂 Projektstruktur
+
+```
+challenge-platform/
+├── app.py              # Einstiegspunkt
+├── config.py           # Konfiguration
+├── extensions.py       # Datenbank & Extensions
+├── models.py           # Datenbankmodelle
+├── requirements.txt    # Abhängigkeiten
+├── blueprints/         # Modulare Routen
+│   ├── admin.py
+│   ├── auth.py
+│   ├── challenge.py
+│   └── public.py
+├── static/             # CSS, Bilder, JS
+├── templates/          # HTML Templates
+└── data/               # SQLite Datenbank (wird erstellt)
+```
+
+## 📝 Lizenz
+
+Dieses Projekt wurde im Rahmen einer Weiterbildungsmaßnahme erstellt.
