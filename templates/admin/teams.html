@@ -4,20 +4,19 @@
 <h2>Teams verwalten</h2>
 
 <ul>
-{% for team in teams %}
+  {% for team in teams %}
   <li>
     {{ team.name }}
 
-    <form method="post"
-          action="/admin/team/delete/{{ team.id }}"
-          style="display:inline"
-          onsubmit="return confirm('Team wirklich löschen? Alle Abgaben und Punkte gehen verloren.')">
+    <form method="post" action="{{ url_for('admin.team_delete', team_id=team.id) }}" style="display:inline"
+      onsubmit="return confirm('Team wirklich löschen? Alle Abgaben und Punkte gehen verloren.')">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <button type="submit" class="reset">🗑 Löschen</button>
     </form>
   </li>
-{% endfor %}
+  {% endfor %}
 </ul>
 
-<a href="/admin/dashboard">⬅ zurück</a>
+<a href="{{ url_for('admin.dashboard') }}">⬅ zurück</a>
 
 {% endblock %}

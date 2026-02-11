@@ -39,10 +39,10 @@ deactivate nondestructive
 if [ "${OSTYPE:-}" = "cygwin" ] || [ "${OSTYPE:-}" = "msys" ] ; then
     # transform D:\path\to\venv to /d/path/to/venv on MSYS
     # and to /cygdrive/d/path/to/venv on Cygwin
-    export VIRTUAL_ENV=$(cygpath "/Users/frankjuchim/Library/CloudStorage/GoogleDrive-frank.juchim@gmail.com/Meine Ablage/Materialsammlung/Weiterbildungsmaßnahme/WBM Informatik/Modul 7 - Textbasiertes Programmieren/M7-05 Coding-Challenge/Proxmox-Server/challenge-platform/venv")
+    export VIRTUAL_ENV=$(cygpath "/Users/frankjuchim/Library/CloudStorage/GoogleDrive-frank.juchim@gmail.com/Meine Ablage/Materialsammlung/Weiterbildungsmaßnahme/WBM Informatik/Modul 7 - Textbasiertes Programmieren/M7-04 Coding-Challenge/Proxmox-Server/challenge-platform/venv")
 else
     # use the path as-is
-    export VIRTUAL_ENV="/Users/frankjuchim/Library/CloudStorage/GoogleDrive-frank.juchim@gmail.com/Meine Ablage/Materialsammlung/Weiterbildungsmaßnahme/WBM Informatik/Modul 7 - Textbasiertes Programmieren/M7-05 Coding-Challenge/Proxmox-Server/challenge-platform/venv"
+    export VIRTUAL_ENV="/Users/frankjuchim/Library/CloudStorage/GoogleDrive-frank.juchim@gmail.com/Meine Ablage/Materialsammlung/Weiterbildungsmaßnahme/WBM Informatik/Modul 7 - Textbasiertes Programmieren/M7-04 Coding-Challenge/Proxmox-Server/challenge-platform/venv"
 fi
 
 _OLD_VIRTUAL_PATH="$PATH"

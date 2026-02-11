@@ -4,9 +4,9 @@
 <h2 class="mb-3">🧩 Social Coding Event</h2>
 
 {% if not challenge %}
-  <div class="event-card text-secondary">
-    Noch ist kein Event aktiv – lehnt euch zurück ☕
-  </div>
+<div class="event-card text-secondary">
+  Noch ist kein Event aktiv – lehnt euch zurück ☕
+</div>
 
 {% else %}
 
@@ -17,21 +17,21 @@
 
 <!-- Statusanzeige -->
 {% if challenge.paused %}
-  <div class="event-card mb-3 text-warning">
-    ⏸ <strong>Challenge pausiert</strong><br>
-    Abgaben sind aktuell deaktiviert.
-  </div>
+<div class="event-card mb-3 text-warning">
+  ⏸ <strong>Challenge pausiert</strong><br>
+  Abgaben sind aktuell deaktiviert.
+</div>
 {% else %}
-  <div class="event-card mb-3 text-success">
-    🟢 <strong>Challenge läuft</strong><br>
-    Abgaben sind möglich.
-  </div>
+<div class="event-card mb-3 text-success">
+  🟢 <strong>Challenge läuft</strong><br>
+  Abgaben sind möglich.
+</div>
 {% endif %}
 
 <!-- Aufgaben -->
 <div class="row g-3">
 
-{% for task in tasks %}
+  {% for task in tasks %}
   <div class="col-md-6">
     <div class="event-card h-100">
 
@@ -45,48 +45,50 @@
       <hr>
 
       {% if task.id in submission_map %}
-        <span class="badge bg-success">
-          ✔ Abgegeben ({{ submission_map[task.id].points }} Punkte)
-        </span>
+      <span class="badge bg-success">
+        ✔ Abgegeben ({{ submission_map[task.id].points if submission_map[task.id].points is not none else '?' }} Punkte)
+      </span>
+
+      {% if submission_map[task.id].feedback %}
+      <div class="mt-2 p-2 rounded bg-dark border border-secondary text-light small">
+        <strong>Feedback:</strong> {{ submission_map[task.id].feedback }}
+      </div>
+      {% endif %}
 
       {% else %}
-        <form method="post"
-              action="/submit/{{ task.id }}"
-              enctype="multipart/form-data"
-              class="{% if challenge.paused %}opacity-50{% endif %}">
+      <form method="post" action="{{ url_for('challenge.submit_task', task_id=task.id) }}" enctype="multipart/form-data"
+        class="{% if challenge.paused %}opacity-50{% endif %}">
 
-          <input type="file"
-                 name="file"
-                 accept=".pde"
-                 class="form-control mb-2"
-                 {% if challenge.paused %}disabled{% endif %}
-                 required>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-          <button class="btn btn-outline-light w-100"
-                  {% if challenge.paused %}disabled{% endif %}>
-            📤 Abgeben
-          </button>
+        <input type="file" name="file" accept=".pde" class="form-control mb-2" {% if challenge.paused %}disabled{% endif
+          %} required>
 
-          {% if challenge.paused %}
-            <small class="text-warning d-block mt-2">
-              ⏸ Upload während Pause nicht möglich
-            </small>
-          {% endif %}
-        </form>
+        <button class="btn btn-outline-light w-100" {% if challenge.paused %}disabled{% endif %}>
+          📤 Abgeben
+        </button>
+
+        {% if challenge.paused %}
+        <small class="text-warning d-block mt-2">
+          ⏸ Upload während Pause nicht möglich
+        </small>
+        {% endif %}
+      </form>
       {% endif %}
 
     </div>
   </div>
-{% endfor %}
+  {% endfor %}
 
 </div>
 {% endif %}
 
 <!-- Auto-Refresh alle 15 Sekunden -->
-<script>
+<!-- Auto-Refresh removed because it interrupts file upload -->
+<!-- <script>
   setTimeout(() => {
     location.reload();
   }, 15000);
-</script>
+</script> -->
 
 {% endblock %}

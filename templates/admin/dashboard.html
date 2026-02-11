@@ -6,25 +6,25 @@
 <div class="row g-4">
 
   <div class="col-md-3">
-    <a href="/admin/challenges" class="btn btn-outline-light w-100 py-4">
+    <a href="{{ url_for('admin.challenges_list') }}" class="btn btn-outline-light w-100 py-4">
       🏁<br><strong>Challenges</strong>
     </a>
   </div>
 
   <div class="col-md-3">
-    <a href="/admin/submissions" class="btn btn-outline-light w-100 py-4">
+    <a href="{{ url_for('admin.submissions') }}" class="btn btn-outline-light w-100 py-4">
       📝<br><strong>Bewertungen</strong>
     </a>
   </div>
 
   <div class="col-md-3">
-    <a href="/admin/teams" class="btn btn-outline-light w-100 py-4">
+    <a href="{{ url_for('admin.teams') }}" class="btn btn-outline-light w-100 py-4">
       👥<br><strong>Teams</strong>
     </a>
   </div>
 
   <div class="col-md-3">
-    <a href="/scoreboard" class="btn btn-outline-light w-100 py-4">
+    <a href="{{ url_for('public.scoreboard') }}" class="btn btn-outline-light w-100 py-4">
       🏆<br><strong>Scoreboard</strong>
     </a>
   </div>
@@ -36,19 +36,19 @@
 
 <h4>Events</h4>
 <ul>
-{% for c in challenges %}
+  {% for c in challenges %}
   <li>
     {{ c.title }}
     {% if c.active %}
-      <span class="badge bg-success">aktiv</span>
+    <span class="badge bg-success">aktiv</span>
     {% else %}
-      <a href="/admin/challenge/{{ c.id }}/activate">aktivieren</a>
+    <a href="{{ url_for('admin.challenge_activate', cid=c.id) }}">aktivieren</a>
     {% endif %}
   </li>
-{% endfor %}
+  {% endfor %}
 </ul>
 
-<a href="/admin/logout" class="btn btn-sm btn-outline-secondary mt-3">
+<a href="{{ url_for('auth.admin_logout') }}" class="btn btn-sm btn-outline-secondary mt-3">
   🔓 Logout
 </a>
 

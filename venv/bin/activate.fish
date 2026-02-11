@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/frankjuchim/Library/CloudStorage/GoogleDrive-frank.juchim@gmail.com/Meine Ablage/Materialsammlung/Weiterbildungsmaßnahme/WBM Informatik/Modul 7 - Textbasiertes Programmieren/M7-05 Coding-Challenge/Proxmox-Server/challenge-platform/venv"
+set -gx VIRTUAL_ENV "/Users/frankjuchim/Library/CloudStorage/GoogleDrive-frank.juchim@gmail.com/Meine Ablage/Materialsammlung/Weiterbildungsmaßnahme/WBM Informatik/Modul 7 - Textbasiertes Programmieren/M7-04 Coding-Challenge/Proxmox-Server/challenge-platform/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

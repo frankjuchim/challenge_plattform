@@ -6,14 +6,10 @@
 <div class="event-card">
 
   <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label class="form-label">Titel der Challenge</label>
-    <input
-      type="text"
-      name="title"
-      class="form-control form-control-lg"
-      placeholder="z. B. Social Coding Event – Abend 1"
-      required
-    >
+    <input type="text" name="title" class="form-control form-control-lg"
+      placeholder="z. B. Social Coding Event – Abend 1" required>
 
     <button class="btn btn-primary mt-4">
       💾 Challenge anlegen

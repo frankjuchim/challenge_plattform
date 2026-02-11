@@ -9,7 +9,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/Users/frankjuchim/Library/CloudStorage/GoogleDrive-frank.juchim@gmail.com/Meine Ablage/Materialsammlung/Weiterbildungsmaßnahme/WBM Informatik/Modul 7 - Textbasiertes Programmieren/M7-05 Coding-Challenge/Proxmox-Server/challenge-platform/venv"
+setenv VIRTUAL_ENV "/Users/frankjuchim/Library/CloudStorage/GoogleDrive-frank.juchim@gmail.com/Meine Ablage/Materialsammlung/Weiterbildungsmaßnahme/WBM Informatik/Modul 7 - Textbasiertes Programmieren/M7-04 Coding-Challenge/Proxmox-Server/challenge-platform/venv"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"

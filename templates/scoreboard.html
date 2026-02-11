@@ -1,43 +1,91 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1 class="text-center mb-5">🏆 Social Coding Event – Scoreboard</h1>
+<div class="row justify-content-center">
+  <div class="col-lg-10">
 
-<div class="event-card">
+    <div class="text-center mb-5">
+      <h1 class="display-4 fw-bold">🏆 Scoreboard</h1>
+      <p class="lead text-secondary">
+        {% if challenge %}
+        {{ challenge.title }}
+        {% else %}
+        Social Coding Event
+        {% endif %}
+      </p>
+    </div>
 
-<table class="table table-borderless text-center align-middle">
-  <thead>
-    <tr>
-      <th class="text-start">Team</th>
-      {% for task in tasks %}
-        <th>{{ task.title }}</th>
-      {% endfor %}
-      <th>Gesamt</th>
-    </tr>
-  </thead>
+    {% if not teams %}
+    <div class="event-card text-center p-5">
+      <h3 class="text-secondary">Noch keine Teams registriert.</h3>
+    </div>
+    {% else %}
 
-  <tbody>
-    {% for team in teams %}
-    <tr style="font-size: 1.3rem;">
-      <td class="text-start fw-bold">
-        {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% endif %}
-        {{ team.name }}
-      </td>
+    <div class="event-card p-0 overflow-hidden">
+      <div class="table-responsive">
+        <table class="table table-hover table-dark mb-0 bg-transparent" style="--bs-table-bg: transparent;">
+          <thead>
+            <tr class="text-secondary border-bottom border-secondary">
+              <th class="p-4 text-center" style="width: 80px;">#</th>
+              <th class="p-4">Team</th>
+              {% for task in tasks %}
+              <th class="p-4 text-center" title="{{ task.title }}">
+                A{{ loop.index }}
+              </th>
+              {% endfor %}
+              <th class="p-4 text-end">Gesamt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in teams %}
+            <tr
+              class="align-middle fs-5 {% if loop.index == 1 %}bg-warning bg-opacity-10{% elif loop.index == 2 %}bg-secondary bg-opacity-10{% elif loop.index == 3 %}bg-danger bg-opacity-10{% endif %}">
 
-      {% for task in tasks %}
-        <td>{{ team.task_points[task.id] }}</td>
-      {% endfor %}
+              <td class="p-4 text-center fw-bold">
+                {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% elif loop.index == 3 %}🥉{% else %}{{
+                loop.index }}{% endif %}
+              </td>
 
-      <td class="fw-bold">{{ team.total }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+              <td class="p-4 fw-bold">
+                {{ team.name }}
+              </td>
 
+              {% for task in tasks %}
+              <td class="p-4 text-center">
+                {% set points = team.task_points[task.id] %}
+                {% if points is not none and points > 0 %}
+                <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25">
+                  {{ points }}
+                </span>
+                {% elif points == 0 %}
+                <span class="text-muted opacity-25">-</span>
+                {% else %}
+                <span class="text-muted opacity-25">-</span>
+                {% endif %}
+              </td>
+              {% endfor %}
+
+              <td class="p-4 text-end fw-bold text-primary">
+                {{ team.total }}
+              </td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {% endif %}
+
+  </div>
 </div>
 
+<!-- Auto Refresh alle 30 Sekunden -->
 <script>
-setTimeout(() => location.reload(), 5000);
+  setTimeout(() => {
+    location.reload();
+  }, 30000);
 </script>
 
 {% endblock %}

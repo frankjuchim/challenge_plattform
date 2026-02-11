@@ -4,11 +4,11 @@
 <h1 class="mb-5">📝 Abgaben bewerten</h1>
 
 {% if submissions|length == 0 %}
-  <div class="event-card text-center">
-    <p class="text-secondary mb-0">
-      🎉 Aktuell gibt es keine Abgaben.
-    </p>
-  </div>
+<div class="event-card text-center">
+  <p class="text-secondary mb-0">
+    🎉 Aktuell gibt es keine Abgaben.
+  </p>
+</div>
 {% endif %}
 
 {% for submission in submissions %}
@@ -22,9 +22,9 @@
         👥 {{ submission.team_name }}
 
         {% if submission.points is not none %}
-          <span class="badge bg-success ms-2">✔ bewertet</span>
+        <span class="badge bg-success ms-2">✔ bewertet</span>
         {% else %}
-          <span class="badge bg-warning text-dark ms-2">⏳ offen</span>
+        <span class="badge bg-warning text-dark ms-2">⏳ offen</span>
         {% endif %}
       </h3>
 
@@ -33,20 +33,29 @@
       </p>
     </div>
 
-    <a
-      href="{{ url_for('download_submission', submission_id=submission.id) }}"
-      class="btn btn-outline-light"
-    >
-      ⬇️ Datei herunterladen
-    </a>
+    <div class="mb-4">
+      <button class="btn btn-sm btn-outline-info" type="button" data-bs-toggle="collapse"
+        data-bs-target="#code-{{ submission.id }}" aria-expanded="false">
+        📄 Code anzeigen
+      </button>
+      <a href="{{ url_for('admin.download_submission', submission_id=submission.id) }}"
+        class="btn btn-sm btn-outline-light ms-2">
+        ⬇️ Datei herunterladen
+      </a>
+    </div>
+  </div>
 
+  <div class="collapse mb-4" id="code-{{ submission.id }}">
+    <div class="card card-body bg-dark text-light font-monospace"
+      style="white-space: pre-wrap; max-height: 400px; overflow-y: auto; font-size: 0.9em;">{{ submission.code }}
+    </div>
   </div>
 
   <hr class="my-4" style="border-color: rgba(255,255,255,0.15);">
 
   <!-- Bewertungsformular -->
   <form method="post">
-
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <input type="hidden" name="submission_id" value="{{ submission.id }}">
 
     <div class="row g-4 align-items-end">
@@ -60,16 +69,9 @@
           </span>
         </label>
 
-        <input
-          type="number"
-          name="points"
-          class="form-control form-control-lg"
-          min="0"
-          max="{{ submission.max_points }}"
-          value="{{ submission.points if submission.points is not none else '' }}"
-          placeholder="z. B. {{ submission.max_points }}"
-          required
-        >
+        <input type="number" name="points" class="form-control form-control-lg" min="0"
+          max="{{ submission.max_points }}" value="{{ submission.points if submission.points is not none else '' }}"
+          placeholder="z. B. {{ submission.max_points }}" required>
       </div>
 
       <!-- Feedback -->
@@ -78,13 +80,8 @@
           Feedback (optional)
         </label>
 
-        <input
-          type="text"
-          name="feedback"
-          class="form-control form-control-lg"
-          value="{{ submission.feedback or '' }}"
-          placeholder="Kurzer Hinweis für das Team"
-        >
+        <input type="text" name="feedback" class="form-control form-control-lg" value="{{ submission.feedback or '' }}"
+          placeholder="Kurzer Hinweis für das Team">
       </div>
 
       <!-- Aktionen -->
@@ -92,18 +89,14 @@
 
         <button class="btn btn-primary w-100">
           {% if submission.points is not none %}
-            ✏️ Bewertung aktualisieren
+          ✏️ Bewertung aktualisieren
           {% else %}
-            💾 Bewertung speichern
+          💾 Bewertung speichern
           {% endif %}
         </button>
 
         {% if submission.points is not none %}
-        <button
-          name="soft_reset"
-          value="1"
-          class="btn btn-outline-warning w-100"
-        >
+        <button name="soft_reset" value="1" class="btn btn-outline-warning w-100">
           ♻️ Bewertung zurücksetzen
         </button>
         {% endif %}
@@ -116,7 +109,7 @@
 </div>
 {% endfor %}
 
-<a href="/admin/dashboard" class="text-secondary">
+<a href="{{ url_for('admin.dashboard') }}" class="text-secondary">
   ← zurück zum Admin-Dashboard
 </a>
 

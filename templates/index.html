@@ -14,24 +14,31 @@
       Kein Druck – nur Kreativität.
     </p>
 
-    <div class="event-card">
-
-      <form method="post">
-        <input type="text"
-               name="team"
-               class="form-control form-control-lg mb-3"
-               placeholder="Teamname"
-               required>
-
-        <button type="submit"
-                class="btn btn-primary btn-lg w-100">
-          🚀 Join the Event
-        </button>
-      </form>
-
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
     </div>
+    {% endif %}
+
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="text" name="team" class="form-control form-control-lg mb-3" placeholder="Teamname" required>
+
+      <input type="password" name="password" class="form-control form-control-lg mb-3" placeholder="Passwort setzen"
+        required>
+
+      <button type="submit" class="btn btn-primary btn-lg w-100">
+        🚀 Team registrieren
+      </button>
+    </form>
+
+    <p class="mt-3 mb-0 text-secondary small">
+      Bereits registriert? <a href="{{ url_for('public.login') }}">Hier einloggen</a>
+    </p>
 
   </div>
+
+</div>
 </div>
 
 {% endblock %}

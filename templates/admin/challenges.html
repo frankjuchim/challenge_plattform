@@ -4,22 +4,22 @@
 <h2 class="mb-4">🎛 Admin · Challenges</h2>
 
 <div class="mb-4">
-  <a href="/admin/challenges/new" class="btn btn-primary">
+  <a href="{{ url_for('admin.challenge_new') }}" class="btn btn-primary">
     ➕ Neue Challenge
   </a>
 </div>
 
 {% if challenges|length == 0 %}
-  <div class="event-card">
-    <p class="text-secondary">
-      Es wurden noch keine Challenges angelegt.
-    </p>
-  </div>
+<div class="event-card">
+  <p class="text-secondary">
+    Es wurden noch keine Challenges angelegt.
+  </p>
+</div>
 {% endif %}
 
 <div class="row g-3">
 
-{% for c in challenges %}
+  {% for c in challenges %}
   <div class="col-12">
     <div class="event-card d-flex justify-content-between align-items-center">
 
@@ -28,13 +28,13 @@
         <h5 class="mb-1">{{ c.title }}</h5>
 
         {% if c.paused %}
-          <span class="badge bg-warning text-dark">
-            ⏸ pausiert
-          </span>
+        <span class="badge bg-warning text-dark">
+          ⏸ pausiert
+        </span>
         {% else %}
-          <span class="badge bg-success">
-            aktiv
-          </span>
+        <span class="badge bg-success">
+          aktiv
+        </span>
         {% endif %}
       </div>
 
@@ -42,32 +42,31 @@
       <div class="d-flex gap-2 flex-wrap">
 
         <!-- Aufgaben -->
-        <a href="{{ url_for('admin_challenge_tasks', cid=c.id) }}"
-           class="btn btn-outline-light btn-sm">
+        <a href="{{ url_for('admin.challenge_tasks', cid=c.id) }}" class="btn btn-outline-light btn-sm">
           📋 Aufgaben
         </a>
 
         <!-- Pause / Fortsetzen -->
         {% if c.paused %}
-          <form method="post"
-                action="/admin/challenges/{{ c.id }}/resume">
-            <button class="btn btn-success btn-sm">
-              ▶ Fortsetzen
-            </button>
-          </form>
+        <form method="post" action="{{ url_for('admin.challenge_resume', cid=c.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-success btn-sm">
+            ▶ Fortsetzen
+          </button>
+        </form>
         {% else %}
-          <form method="post"
-                action="/admin/challenges/{{ c.id }}/pause">
-            <button class="btn btn-warning btn-sm">
-              ⏸ Pause
-            </button>
-          </form>
+        <form method="post" action="{{ url_for('admin.challenge_pause', cid=c.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-warning btn-sm">
+            ⏸ Pause
+          </button>
+        </form>
         {% endif %}
 
         <!-- Löschen -->
-        <form method="post"
-              action="/admin/challenges/{{ c.id }}/delete"
-              onsubmit="return confirm('Challenge wirklich löschen? Alle Aufgaben und Abgaben gehen verloren!');">
+        <form method="post" action="{{ url_for('admin.challenge_delete', cid=c.id) }}"
+          onsubmit="return confirm('Challenge wirklich löschen? Alle Aufgaben und Abgaben gehen verloren!');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <button class="btn btn-danger btn-sm">
             🗑 Löschen
           </button>
@@ -76,11 +75,11 @@
       </div>
     </div>
   </div>
-{% endfor %}
+  {% endfor %}
 
 </div>
 
-<a href="/admin/dashboard" class="text-secondary d-block mt-4">
+<a href="{{ url_for('admin.dashboard') }}" class="text-secondary d-block mt-4">
   ← zurück zum Admin-Dashboard
 </a>
 
