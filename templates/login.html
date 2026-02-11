@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center text-center">
+    <div class="col-md-5">
+
+        <h2 class="mb-4">🔐 Team Login</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <div class="event-card">
+
+            <form method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="mb-3">
+                    <input type="text" name="team" class="form-control form-control-lg" placeholder="Teamname" required>
+                </div>
+
+                <div class="mb-4">
+                    <input type="password" name="password" class="form-control form-control-lg" placeholder="Passwort"
+                        required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    Einloggen
+                </button>
+            </form>
+
+        </div>
+
+        <p class="mt-4 text-secondary">
+            Noch kein Team? <a href="{{ url_for('public.index') }}">Hier registrieren</a>
+        </p>
+
+    </div>
+</div>
+
+{% endblock %}
