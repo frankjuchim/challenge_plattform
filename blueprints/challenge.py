@@ -7,8 +7,8 @@ from datetime import datetime
 
 challenge_bp = Blueprint('challenge', __name__)
 
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in current_app.config["ALLOWED_EXTENSIONS"]
+def allowed_file(filename, allowed_ext):
+    return "." in filename and filename.lower().endswith(allowed_ext.lower())
 
 def get_active_challenge():
     # In old app: SELECT * FROM challenges WHERE active = 1
@@ -102,7 +102,7 @@ def submit_task(task_id):
         abort(400)
     
     file = request.files["file"]
-    if file.filename == "" or not allowed_file(file.filename):
+    if file.filename == "" or not allowed_file(file.filename, task.allowed_extension):
         abort(400)
 
     filename = secure_filename(file.filename)

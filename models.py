@@ -53,6 +53,7 @@ class Task(db.Model):
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
     max_points = db.Column(db.Integer, default=0)
+    allowed_extension = db.Column(db.String(10), default=".pde")
     submissions = db.relationship('Submission', backref='task', lazy=True, cascade="all, delete-orphan")
 
 class Submission(db.Model):

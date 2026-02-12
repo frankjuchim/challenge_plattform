@@ -36,7 +36,10 @@
     <div class="event-card h-100">
 
       <h5>{{ task.title }}</h5>
-      <p class="text-secondary">{{ task.description }}</p>
+      <!-- Markdown Rendering -->
+      <div class="text-secondary task-description">
+        {{ task.description | markdown }}
+      </div>
 
       <small class="text-secondary">
         Max. Punkte: {{ task.max_points }}
@@ -61,8 +64,12 @@
 
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-        <input type="file" name="file" accept=".pde" class="form-control mb-2" {% if challenge.paused %}disabled{% endif
-          %} required>
+        <div class="mb-2">
+          <small class="text-secondary d-block mb-1">Erlaubtes Format: <strong>{{ task.allowed_extension
+              }}</strong></small>
+          <input type="file" name="file" accept="{{ task.allowed_extension }}" class="form-control" {% if
+            challenge.paused %}disabled{% endif %} required>
+        </div>
 
         <button class="btn btn-outline-light w-100" {% if challenge.paused %}disabled{% endif %}>
           📤 Abgeben

@@ -14,13 +14,23 @@
 
     <div class="mb-3">
       <label class="form-label">Aufgabentext</label>
-      <textarea name="description" class="form-control" rows="4" placeholder="Was sollen die Teams umsetzen?"
-        required></textarea>
+      <textarea name="description" class="form-control" rows="4"
+        placeholder="Was sollen die Teams umsetzen?"></textarea>
     </div>
 
     <div class="mb-3">
-      <label class="form-label">Maximale Punkte</label>
       <input type="number" name="max_points" class="form-control" value="10" min="1" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Erlaubtes Dateiformat</label>
+      <select name="allowed_extension" class="form-select">
+        <option value=".pde" selected>.pde (Processing)</option>
+        <option value=".sb">.sb (Scratch 1.4)</option>
+        <option value=".sb3">.sb3 (Scratch 3.0)</option>
+        <option value=".java">.java (Java)</option>
+        <option value=".py">.py (Python)</option>
+      </select>
     </div>
 
     <button class="btn btn-primary">
@@ -49,18 +59,37 @@
         </span>
       </div>
 
-      <form method="post" action="{{ url_for('admin.task_delete', tid=t.id) }}"
-        onsubmit="return confirm('Aufgabe wirklich löschen?');">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button class="btn btn-outline-danger btn-sm">
-          🗑
-        </button>
-      </form>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('admin.task_edit', tid=t.id) }}" class="btn btn-outline-info btn-sm">
+          ✏️
+        </a>
+
+        <form method="post" action="{{ url_for('admin.task_delete', tid=t.id) }}"
+          onsubmit="return confirm('Aufgabe wirklich löschen?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-outline-danger btn-sm">
+            🗑
+          </button>
+        </form>
+      </div>
+
     </li>
     {% endfor %}
   </ul>
 
 </div>
+
+<!-- EasyMDE Markdown Editor -->
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<script>
+  var easyMDE = new EasyMDE({
+    element: document.querySelector('textarea[name="description"]'),
+    spellChecker: false,
+    status: false,
+    toolbar: ["bold", "italic", "heading", "|", "quote", "code", "unordered-list", "ordered-list", "|", "preview", "guide"]
+  });
+</script>
 
 <a href="{{ url_for('admin.challenges_list') }}" class="text-secondary mt-4 d-block">
   ← zurück zu Challenges

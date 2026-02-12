@@ -26,6 +26,15 @@ def create_app():
         if request.headers.get("X-Forwarded-Proto") == "https":
             return redirect(request.url.replace("https://", "http://"), code=301)
 
+    # Custom Filters
+    @app.template_filter('markdown')
+    def render_markdown(text):
+        from markupsafe import Markup
+        import markdown
+        if not text:
+            return ""
+        return Markup(markdown.markdown(text))
+
     return app
 
 app = create_app()
@@ -37,15 +46,6 @@ if __name__ == "__main__":
     app.run(
       host="0.0.0.0",
       port=8000,
-      debug=True
-    )
-
-
-
-if __name__ == "__main__":
-    app.run(
-      host="0.0.0.0",
-      port=8000, #5000 belegt durch AirDrop
       debug=True
     )
 

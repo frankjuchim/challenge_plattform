@@ -51,8 +51,15 @@ def challenge_tasks(cid):
         title = request.form["title"]
         description = request.form["description"]
         max_points = int(request.form["max_points"])
+        allowed_extension = request.form.get("allowed_extension", ".pde")
         
-        task = Task(challenge_id=cid, title=title, description=description, max_points=max_points)
+        task = Task(
+            challenge_id=cid, 
+            title=title, 
+            description=description, 
+            max_points=max_points,
+            allowed_extension=allowed_extension
+        )
         db.session.add(task)
         db.session.commit()
         return redirect(url_for('admin.challenge_tasks', cid=cid))
@@ -90,6 +97,21 @@ def task_delete(tid):
     # Redirect back to tasks list
     return redirect(url_for('admin.challenge_tasks', cid=cid))
 
+@admin_bp.route("/tasks/<int:tid>/edit", methods=["GET", "POST"])
+def task_edit(tid):
+    task = Task.query.get_or_404(tid)
+    cid = task.challenge_id
+    
+    if request.method == "POST":
+        task.title = request.form["title"]
+        task.description = request.form["description"]
+        task.max_points = int(request.form["max_points"])
+        task.allowed_extension = request.form.get("allowed_extension", ".pde")
+        db.session.commit()
+        return redirect(url_for('admin.challenge_tasks', cid=cid))
+
+    return render_template("admin/task_edit.html", task=task)
+
 @admin_bp.route("/submissions", methods=["GET", "POST"])
 def submissions():
     if request.method == "POST":
@@ -105,7 +127,7 @@ def submissions():
              points = request.form.get("points")
              feedback = request.form.get("feedback", "")
              submission = Submission.query.get(submission_id)
-             if submission and points is not None:
+             if submission and points: # Check if points is not empty string
                  submission.points = int(points)
                  submission.feedback = feedback
                  db.session.commit()
@@ -133,6 +155,7 @@ def submissions():
             "id": s.id,
             "team_name": s.team.name,
             "task_title": s.task.title,
+            "task_description": s.task.description,
             "max_points": s.task.max_points,
             "points": s.points,
             "feedback": s.feedback,

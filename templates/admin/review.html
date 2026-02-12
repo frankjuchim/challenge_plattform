@@ -34,6 +34,10 @@
     </div>
 
     <div class="mb-4">
+      <button class="btn btn-sm btn-outline-secondary me-2" type="button" data-bs-toggle="collapse"
+        data-bs-target="#desc-{{ submission.id }}" aria-expanded="false">
+        ℹ️ Aufgabenbeschreibung
+      </button>
       <button class="btn btn-sm btn-outline-info" type="button" data-bs-toggle="collapse"
         data-bs-target="#code-{{ submission.id }}" aria-expanded="false">
         📄 Code anzeigen
@@ -42,6 +46,15 @@
         class="btn btn-sm btn-outline-light ms-2">
         ⬇️ Datei herunterladen
       </a>
+    </div>
+  </div>
+
+  <div class="collapse mb-3" id="desc-{{ submission.id }}">
+    <div class="card card-body bg-secondary bg-opacity-10">
+      <h5 class="card-title">Aufgabenstellung</h5>
+      <div class="card-text text-light opacity-75">
+        {{ submission.task_description | markdown }}
+      </div>
     </div>
   </div>
 
@@ -101,6 +114,16 @@
         </button>
         {% endif %}
 
+      </div>
+
+      <div class="col-md-12 mt-2">
+        <div class="d-flex justify-content-end">
+          <button type="submit" formaction="{{ url_for('admin.submission_reset', submission_id=submission.id) }}"
+            class="btn btn-outline-danger btn-sm"
+            onclick="return confirm('Abgabe wirklich unwiderruflich löschen? Das Team kann dann neu abgeben.');">
+            🗑️ Abgabe vollständig löschen (Reset)
+          </button>
+        </div>
       </div>
 
     </div>

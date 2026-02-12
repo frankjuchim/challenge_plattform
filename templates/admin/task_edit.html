@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="event-card">
+            <h2 class="mb-4">✏️ Aufgabe bearbeiten</h2>
+
+            <form method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="mb-3">
+                    <label class="form-label">Titel</label>
+                    <input type="text" name="title" class="form-control" value="{{ task.title }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Beschreibung (Markdown)</label>
+                    <textarea id="description-editor" name="description" class="form-control"
+                        rows="5">{{ task.description or '' }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Max. Punkte</label>
+                    <input type="number" name="max_points" class="form-control" value="{{ task.max_points }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Erlaubtes Dateiformat</label>
+                    <select name="allowed_extension" class="form-select">
+                        <option value=".pde" {% if task.allowed_extension=='.pde' %}selected{% endif %}>.pde
+                            (Processing)</option>
+                        <option value=".sb" {% if task.allowed_extension=='.sb' %}selected{% endif %}>.sb (Scratch 1.4)
+                        </option>
+                        <option value=".sb3" {% if task.allowed_extension=='.sb3' %}selected{% endif %}>.sb3 (Scratch
+                            3.0)</option>
+                        <option value=".java" {% if task.allowed_extension=='.java' %}selected{% endif %}>.java (Java)
+                        </option>
+                        <option value=".py" {% if task.allowed_extension=='.py' %}selected{% endif %}>.py (Python)
+                        </option>
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('admin.challenge_tasks', cid=task.challenge_id) }}"
+                        class="btn btn-outline-secondary">Abbrechen</a>
+                    <button type="submit" class="btn btn-primary">💾 Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- EasyMDE Markdown Editor -->
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<script>
+    var easyMDE = new EasyMDE({
+        element: document.getElementById('description-editor'),
+        spellChecker: false,
+        status: false,
+        toolbar: ["bold", "italic", "heading", "|", "quote", "code", "unordered-list", "ordered-list", "|", "preview", "guide"]
+    });
+</script>
+
+{% endblock %}
