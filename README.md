@@ -71,7 +71,7 @@ Voraussetzung: Python 3.8 oder höher.
     Erstelle eine `.env` Datei im Hauptverzeichnis (siehe `.env.example`):
     ```ini
     SECRET_KEY=dein-geheimer-schluessel
-    ADMIN_PASSWORD=admin123
+    ADMIN_PASSWORD=neues-sicheres-admin-passwort # <-- HIER ANPASSEN!
     DATABASE_URL=sqlite:///data/challenge.db
     # FLASK_ENV=development
     ```
@@ -83,13 +83,13 @@ Voraussetzung: Python 3.8 oder höher.
     ```bash
     python app.py
     ```
-    Die Anwendung läuft nun unter [http://localhost:8000](http://localhost:8000).
+    Die Anwendung läuft nun unter [http://<Meine IP>:8000](http://localhost:8000).
 
 ## 📖 Nutzung
 
 1.  **Admin-Zugang**:
-    *   Rufe [http://localhost:8000/admin](http://localhost:8000/admin) auf (Link auch im Footer der Seite).
-    *   Login mit dem in der `.env` definierten Passwort.
+    *   Rufe [http://<Meine IP>:8000/admin](http://localhost:8000/admin) auf (Link auch im Footer der Seite).
+    *   Login mit dem in der `.env` definierten Passwort (`ADMIN_PASSWORD`).
     *   Erstelle eine neue Challenge.
     *   Füge Aufgaben hinzu, wähle Punkte und das erlaubte Dateiformat.
     *   Aktiviere die Challenge.
