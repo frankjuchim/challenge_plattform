@@ -83,7 +83,7 @@ Voraussetzung: Python 3.8 oder höher.
     ```bash
     python app.py
     ```
-    Die Anwendung läuft nun unter [http://<Meine IP>:8000](http://localhost:8000).
+    Die Anwendung läuft nun unter [http://< Meine IP >:8000](http://localhost:8000).
 
 ## 📖 Nutzung
 
