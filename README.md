@@ -12,25 +12,29 @@ Eine moderne, Flask-basierte Webanwendung für Coding-Challenges, Hackathons und
 ### Für Teilnehmer
 *   **Team-Registrierung & Login**: Sichere Anmeldung mit Teamnamen und Passwort.
 *   **Dashboard**: Übersicht über aktive Challenges und Aufgaben.
-*   **Datei-Upload**: Einfaches Einreichen von Lösungen (z.B. `.pde` Dateien für Processing).
+*   **Spezifische Datei-Uploads**: Aufgaben unterstützen verschiedene Dateiformate (Processing `.pde`, Scratch `.sb/.sb3`, Python `.py`, Java `.java`).
 *   **Live Scoreboard**: Echtzeit-Ranking mit Punkten pro Aufgabe und Gesamtpunktzahl.
 *   **Responsive Design**: Optimiert für Desktop und mobile Geräte ("Dark Mode").
 
 ### Für Administratoren
 *   **Admin-Dashboard**: Zentrale Verwaltung aller Challenges.
 *   **Challenge-Management**: Erstellen, Pausieren und Beenden von Challenges.
-*   **Aufgaben-Verwaltung**: Hinzufügen von Aufgaben mit Beschreibungen und maximalen Punkten.
+*   **Aufgaben-Konfiguration**:
+    *   Erstellen von Aufgaben mit detaillierten Beschreibungen.
+    *   **Markdown Support**: Aufgabenbeschreibungen werden mit Markdown formatiert.
+    *   **Dateiformat-Wahl**: Festlegen des erlaubten Dateityps pro Aufgabe.
 *   **Review-System**:
-    *   Anzeige eingereichter Lösungen.
+    *   Anzeige eingereichter Lösungen inklusive **Aufgabenbeschreibung**.
     *   **In-Browser Code Preview**: Code direkt im Browser lesen.
     *   Download-Option für lokale Tests.
     *   Bewertung mit Punkten und Feedback.
+    *   **Abgabe löschen**: Möglichkeit, fehlerhafte Abgaben komplett zu entfernen, damit Teams neu einreichen können.
 *   **Team-Verwaltung**: Übersicht und Management registrierter Teams.
 
 ## 🛠 Technologien
 
 *   **Backend**: Python, Flask, SQLAlchemy (SQLite).
-*   **Frontend**: HTML5, CSS3, Bootstrap 5.
+*   **Frontend**: HTML5, CSS3, Bootstrap 5, Markdown.
 *   **Sicherheit**:
     *   Passwort-Hashing (Werkzeug Security).
     *   CSRF Protection (Flask-WTF).
@@ -39,7 +43,7 @@ Eine moderne, Flask-basierte Webanwendung für Coding-Challenges, Hackathons und
 
 ## 🚀 Installation & Setup
 
- Voraussetzung: Python 3.8 oder höher.
+Voraussetzung: Python 3.8 oder höher.
 
 1.  **Repository klonen**
     ```bash
@@ -72,7 +76,10 @@ Eine moderne, Flask-basierte Webanwendung für Coding-Challenges, Hackathons und
     # FLASK_ENV=development
     ```
 
-5.  **Anwendung starten**
+5.  **Datenbank vorbereiten**
+    Beim ersten Start wird die Datenbank automatisch erstellt. Falls Updates an der Datenbankstruktur nötig sind (z.B. neue Spalten), liegen Migrationsskripte bei (z.B. `migrate_db.py`).
+
+6.  **Anwendung starten**
     ```bash
     python app.py
     ```
@@ -83,13 +90,14 @@ Eine moderne, Flask-basierte Webanwendung für Coding-Challenges, Hackathons und
 1.  **Admin-Zugang**:
     *   Rufe [http://localhost:8000/admin](http://localhost:8000/admin) auf (Link auch im Footer der Seite).
     *   Login mit dem in der `.env` definierten Passwort.
-    *   Erstelle eine neue Challenge und füge Aufgaben hinzu.
+    *   Erstelle eine neue Challenge.
+    *   Füge Aufgaben hinzu, wähle Punkte und das erlaubte Dateiformat.
     *   Aktiviere die Challenge.
 
 2.  **Teilnehmer**:
     *   Registrieren sich auf der Startseite.
     *   Werden direkt zur aktiven Challenge weitergeleitet.
-    *   Können Lösungen hochladen.
+    *   Können Lösungen im geforderten Format hochladen.
 
 ## 📂 Projektstruktur
 
@@ -100,6 +108,7 @@ challenge-platform/
 ├── extensions.py       # Datenbank & Extensions
 ├── models.py           # Datenbankmodelle
 ├── requirements.txt    # Abhängigkeiten
+├── migrate_db.py       # Datenbank-Migrationsskript
 ├── blueprints/         # Modulare Routen
 │   ├── admin.py
 │   ├── auth.py
