@@ -196,7 +196,8 @@ def download_submission(submission_id):
     original_filename = os.path.basename(filepath)
     
     team_clean = safe_name(submission.team.name)
-    download_name = f"{team_clean}_Aufgabe_{submission.task_id}.pde"
+    ext = os.path.splitext(original_filename)[1]  # z.B. ".sb3" oder ".pde"
+    download_name = f"{team_clean}_Aufgabe_{submission.task_id}{ext}"
     
     return send_from_directory(
         directory,
